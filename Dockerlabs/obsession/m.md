@@ -8,7 +8,7 @@
 
 Se utilizó Nmap para identificar los puertos y servicios accesibles de la máquina objetivo.
 
-![Resultado del reconocimiento inicial](images/image1.PNG)
+![Resultado](https://raw.githubusercontent.com/mofuel/writeups/main/Dockerlabs/obsession/images/image1.PNG)
 
 En este análisis se identificaron tres puertos abiertos: FTP (21), SSH (22) y HTTP (80).
 
@@ -22,9 +22,10 @@ En este análisis se identificaron tres puertos abiertos: FTP (21), SSH (22) y H
 
 Luego de identificar los servicios abiertos, se revisaron con mayor detalle para encontrar información útil. En primer lugar, se ingresó al servicio FTP mediante `ftp 172.17.0.2`, utilizando el acceso anónimo para listar y descargar los archivos disponibles. Después, se revisó la página web con `curl http://172.17.0.2` y se buscaron directorios accesibles mediante Gobuster, encontrando rutas como `/backup` e `/important`. Finalmente, se consideró el servicio SSH como una posible vía de acceso remoto, siempre utilizando las credenciales obtenidas durante el análisis del laboratorio.
 
-![Evidencia de la enumeración](images/image2.PNG)
+![Evidencia](https://raw.githubusercontent.com/mofuel/writeups/main/Dockerlabs/obsession/images/image2.PNG)
 
-![Directorios o recursos encontrados](images/image3.PNG)
+
+![Evidencia](https://raw.githubusercontent.com/mofuel/writeups/main/Dockerlabs/obsession/images/image3.PNG)
 
 ## Obtención del acceso inicial
 
@@ -34,13 +35,14 @@ Durante la revisión de los archivos y la página web se logró identificar el u
 
 Una vez dentro de la máquina mediante SSH, se revisó el entorno del usuario para conocer la cuenta utilizada y sus permisos. Para ello, se comprobaron la identidad del usuario y los privilegios disponibles mediante comandos como `whoami`, `id` y `sudo -l`. Durante esta revisión se observó que el usuario `russoski` podía ejecutar la herramienta **Vim** con permisos de administrador y sin ingresar una contraseña. Este hallazgo fue registrado como una configuración insegura y como un posible medio para realizar una escalada de privilegios.
 
-![Evidencia de la enumeración interna](images/image4.PNG)
+![Evidencia](https://raw.githubusercontent.com/mofuel/writeups/main/Dockerlabs/obsession/images/image4.PNG)
+
 
 ## Identificación del vector de escalada
 
 Al revisar los permisos del usuario `russoski`, se encontró que podía ejecutar **Vim** como administrador sin necesidad de ingresar una contraseña. Esta configuración no es segura porque Vim no solo permite editar archivos, sino que también puede realizar otras acciones del sistema. Por ese motivo, un usuario con permisos limitados podría aprovechar esta autorización para realizar acciones con privilegios de administrador.
 
-![Evidencia del vector de escalada](images/image5.PNG)
+![Evidencia](https://raw.githubusercontent.com/mofuel/writeups/main/Dockerlabs/obsession/images/image5.PNG)
 
 ## Resultado del laboratorio
 
